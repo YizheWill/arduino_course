@@ -15,24 +15,6 @@ void setup()
 }
 void loop()
 {
-    // digitalWrite(ultra_sound_trig_pin, LOW);
-    // delayMicroseconds(2);
-    // digitalWrite(ultra_sound_trig_pin, HIGH);
-    // delayMicroseconds(10);
-    // digitalWrite(ultra_sound_trig_pin, LOW);
-    // duration = pulseIn(ultra_sound_echo_pin, HIGH);
-    // distance = (duration / 2) / 29.1;
-    // Serial.println(distance);
-    // if (distance < 20)
-    // {
-    //     digitalWrite(red_light_pin, HIGH);
-    //     digitalWrite(green_light_pin, LOW);
-    // }
-    // else
-    // {
-    //     digitalWrite(red_light_pin, LOW);
-    //     digitalWrite(green_light_pin, HIGH);
-    // }
     digitalWrite(ultra_sound_trig_pin, LOW);
     delayMicroseconds(2);
     digitalWrite(ultra_sound_trig_pin, HIGH);
@@ -43,11 +25,12 @@ void loop()
     distance = (duration / 2) / 29.1;
 
     Serial.print("Distance: ");
-    if (distance >= 200 || distance <= 0)
+    if (distance >= 20 || distance <= 0)
     {
         digitalWrite(red_light_pin, LOW);
         digitalWrite(green_light_pin, HIGH);
-        Serial.println("Out of range");
+        Serial.print(distance);
+        Serial.println(" cm");
     }
     else
     {

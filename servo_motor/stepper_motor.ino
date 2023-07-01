@@ -1,64 +1,56 @@
-const int IN1 = 11;
-const int IN2 = 10;
-const int IN3 = 9;
-const int IN4 = 8;
-const char tab1[] = {
-    0x01, 0x03, 0x02, 0x06, 0x04, 0x0c, 0x08, 0x09};
+/*
+  Stepper Motor Demonstration 1
+  Stepper-Demo1.ino
+  Demonstrates 28BYJ-48 Unipolar Stepper with ULN2003 Driver
+  Uses Arduino Stepper Library
 
-const char tab2[] = {
-    0x01, 0x09, 0x08, 0x0c, 0x04, 0x06, 0x02, 0x03};
+  DroneBot Workshop 2018
+  https://dronebotworkshop.com
+*/
+
+// Include the Arduino Stepper Library
+#include <Stepper.h>
+
+// Define Constants
+
+// Number of steps per internal motor revolution
+const float STEPS_PER_REV = 32;
+
+//  Amount of Gear Reduction
+const float GEAR_RED = 64;
+
+// Number of steps per geared output rotation
+const float STEPS_PER_OUT_REV = STEPS_PER_REV * GEAR_RED;
+
+// Define Variables
+
+// Number of Steps Required
+int StepsRequired;
+
+// Create Instance of Stepper Class
+// Specify Pins used for motor coils
+// The pins used are 8,9,10,11
+// Connected to ULN2003 Motor Driver In1, In2, In3, In4
+// Pins entered in sequence 1-3-2-4 for proper step sequencing
+
+Stepper steppermotor(STEPS_PER_REV, 8, 10, 9, 11);
 
 void setup()
 {
-    pinMode(IN1, OUTPUT);
-    pinMode(IN2, OUTPUT);
-    pinMode(IN3, OUTPUT);
-    pinMode(IN4, OUTPUT);
+    // Nothing  (Stepper Library sets pins as outputs)
 }
 
 void loop()
 {
-    ctlStepMotor(180, 1);
-    StepMotorStop();
-    delay(1000);
-    ctlStepMotor(-90, 1);
-    StepMotorStop();
-    delay(1000);
-}
+    // Rotate CCW counter clockwise 1/2
+    StepsRequired = -STEPS_PER_OUT_REV / 2;
+    steppermotor.setSpeed(700);
+    steppermotor.step(StepsRequired);
+    delay(2000);
 
-void ctlStepMotor(int angle, char speeds)
-{
-    for (int j = 0; j < abs(angle); j++)
-    {
-        if (angle > 0)
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                digitalWrite(IN1, ((tab1[i] & 0x01) == 0x01 ? true : false));
-                digitalWrite(IN2, ((tab1[i] & 0x02) == 0x02 ? true : false));
-                digitalWrite(IN3, ((tab1[i] & 0x04) == 0x04 ? true : false));
-                digitalWrite(IN4, ((tab1[i] & 0x08) == 0x08 ? true : false));
-                delay(speeds);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                digitalWrite(IN1, ((tab2[i] & 0x01) == 0x01 ? true : false));
-                digitalWrite(IN2, ((tab2[i] & 0x02) == 0x02 ? true : false));
-                digitalWrite(IN3, ((tab2[i] & 0x04) == 0x04 ? true : false));
-                digitalWrite(IN4, ((tab2[i] & 0x08) == 0x08 ? true : false));
-                delay(speeds);
-            }
-        }
-    }
-}
-
-void StepMotorStop()
-{
-    digitalWrite(IN1, 0);
-    digitalWrite(IN2, 0);
-    digitalWrite(IN3, 0);
-    digitalWrite(IN4, 0);
+    // Rotate CCW clockwise 1/4
+    StepsRequired = STEPS_PER_OUT_REV / 4;
+    steppermotor.setSpeed(700);
+    steppermotor.step(StepsRequired);
+    delay(2000);
 }

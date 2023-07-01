@@ -3,11 +3,12 @@
 Servo servo1;
 
 const int sw = 2;
-const int xcoord = 0;
+const int ycord = 0;
+const int xcord = 1;
 const int led = 11;
 const int servo = 9;
 
-int joyVal;
+int joyValX;
 int brightness;
 
 void setup()
@@ -21,10 +22,11 @@ void setup()
 
 void loop()
 {
-    joyVal = analogRead(xcoord);
-    brightness = analogRead(xcoord);
-    joyVal = map(joyVal, 0, 1023, 0, 180);
-    servo1.write(joyVal);
+    joyValX = analogRead(xcord);
+
+    brightness = analogRead(ycord);
+    joyValX = map(joyValX, 0, 1023, 180, 0);
+    servo1.write(joyValX);
     brightness = map(brightness, 0, 1023, 0, 255);
     analogWrite(led, brightness);
     delay(5);

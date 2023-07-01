@@ -18,10 +18,10 @@ void setup()
 
 void loop()
 {
-    ctlStepMotor(360, 1);
+    ctlStepMotor(180, 1);
     StepMotorStop();
     delay(1000);
-    ctlStepMotor(-360, 1);
+    ctlStepMotor(-90, 1);
     StepMotorStop();
     delay(1000);
 }
